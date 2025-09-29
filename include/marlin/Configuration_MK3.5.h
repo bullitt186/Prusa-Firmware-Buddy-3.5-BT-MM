@@ -420,7 +420,7 @@
 // Above this temperature the heater will be switched off.
 // This can protect components from overheating, but NOT from shorts and failures.
 // (Use MINTEMP for thermistor short/failure protection.)
-#define HEATER_0_MAXTEMP 305
+#define HEATER_0_MAXTEMP 410
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
 #define HEATER_3_MAXTEMP 275
@@ -742,7 +742,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT_E0 266 // 95% of the original 280 to account for normalised flow
+#define DEFAULT_AXIS_STEPS_PER_UNIT_E0 830 // 95% of the original 280 to account for normalised flow
 #define DEFAULT_AXIS_STEPS_PER_UNIT \
     { 100, 100, 400, DEFAULT_AXIS_STEPS_PER_UNIT_E0 }
 /**
@@ -1099,7 +1099,7 @@
 // The size of the print bed
 #define X_BED_SIZE 250
 #define Y_BED_SIZE 210
-#define Z_SIZE 210
+#define Z_SIZE 202
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS -1
