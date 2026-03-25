@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       upstream_ref: ${{ steps.upstream-ref.outputs.ref }}
+      upstream_source_ref: ${{ steps.source-ref.outputs.ref }}
       release_tag: ${{ steps.release-meta.outputs.tag }}
       release_name: ${{ steps.release-meta.outputs.name }}
     steps:
@@ -41,6 +42,22 @@ jobs:
           fi
           echo "ref=${ref}" >> "${GITHUB_OUTPUT}"
           echo "Using upstream ref: ${ref}"
+
+      - name: Resolve upstream source ref
+        id: source-ref
+        shell: bash
+        run: |
+          ref="${{ steps.upstream-ref.outputs.ref }}"
+          version="${ref#v}"
+          release_branch="RELEASE-${version}"
+          if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && git ls-remote --exit-code --heads https://github.com/prusa3d/Prusa-Firmware-Buddy.git "${release_branch}" >/dev/null 2>&1; then
+            source_ref="${release_branch}"
+            echo "Using upstream release branch: ${source_ref}"
+          else
+            source_ref="${ref}"
+            echo "Using upstream release tag/ref: ${source_ref}"
+          fi
+          echo "ref=${source_ref}" >> "${GITHUB_OUTPUT}"
 
       - name: Build release metadata
         id: release-meta
@@ -79,7 +96,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: prusa3d/Prusa-Firmware-Buddy
-          ref: ${{ needs.prepare.outputs.upstream_ref }}
+          ref: ${{ needs.prepare.outputs.upstream_source_ref }}
           fetch-depth: 0
           path: source
 
