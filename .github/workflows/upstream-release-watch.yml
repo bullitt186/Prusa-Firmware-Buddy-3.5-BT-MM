@@ -1,0 +1,66 @@
+name: Upstream Release Watch
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_REPO: prusa3d/Prusa-Firmware-Buddy
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEFAULT_BRANCH }}
+
+      - name: Fetch latest upstream release
+        id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest_tag="$(gh api repos/${UPSTREAM_REPO}/releases/latest --jq .tag_name)"
+          echo "tag=${latest_tag}" >> "${GITHUB_OUTPUT}"
+          echo "Latest upstream release: ${latest_tag}"
+
+      - name: Read tracked upstream ref
+        id: tracked
+        run: |
+          tracked_tag="$(< .github/upstream-ref.txt)"
+          echo "tag=${tracked_tag}" >> "${GITHUB_OUTPUT}"
+          echo "Tracked upstream release: ${tracked_tag}"
+
+      - name: Stop if already up to date
+        if: steps.latest.outputs.tag == steps.tracked.outputs.tag
+        run: echo "No new upstream release detected."
+
+      - name: Update tracked upstream ref
+        if: steps.latest.outputs.tag != steps.tracked.outputs.tag
+        run: |
+          printf '%s\n' "${{ steps.latest.outputs.tag }}" > .github/upstream-ref.txt
+
+      - name: Commit tracked upstream ref update
+        if: steps.latest.outputs.tag != steps.tracked.outputs.tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/upstream-ref.txt
+          git commit -m "Track upstream release ${{ steps.latest.outputs.tag }}"
+          git push origin "HEAD:${DEFAULT_BRANCH}"
+
+      - name: Trigger firmware build
+        if: steps.latest.outputs.tag != steps.tracked.outputs.tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run firmware-ci.yml \
+            --ref "${DEFAULT_BRANCH}" \
+            -f upstream_ref="${{ steps.latest.outputs.tag }}"

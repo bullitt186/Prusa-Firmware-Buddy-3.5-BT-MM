@@ -1,0 +1,56 @@
+From 35919f8fd16ef4dbc18466dc22254b086b984716 Mon Sep 17 00:00:00 2001
+From: bullitt168 <bastian@stahmer.net>
+Date: Mon, 29 Sep 2025 22:38:31 +0200
+Subject: [PATCH] custom mk3.5 and mk4 settings
+
+---
+ include/marlin/Configuration_MK3.5.h   | 6 +++---
+ include/marlin/Configuration_MK4_adv.h | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/include/marlin/Configuration_MK3.5.h b/include/marlin/Configuration_MK3.5.h
+index 5d6bbfb61..322a3e2c2 100644
+--- a/include/marlin/Configuration_MK3.5.h
++++ b/include/marlin/Configuration_MK3.5.h
+@@ -232,7 +232,7 @@
+ // Above this temperature the heater will be switched off.
+ // This can protect components from overheating, but NOT from shorts and failures.
+ // (Use MINTEMP for thermistor short/failure protection.)
+-#define HEATER_0_MAXTEMP 305
++#define HEATER_0_MAXTEMP 410
+ #define HEATER_1_MAXTEMP 275
+ #define HEATER_2_MAXTEMP 275
+ #define HEATER_3_MAXTEMP 275
+@@ -523,7 +523,7 @@
+  * Override with M92
+  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
+  */
+-#define DEFAULT_AXIS_STEPS_PER_UNIT_E0 266 // 95% of the original 280 to account for normalised flow
++#define DEFAULT_AXIS_STEPS_PER_UNIT_E0 830 // 95% of the original 280 to account for normalised flow
+ #define DEFAULT_AXIS_STEPS_PER_UNIT \
+     { 100, 100, 400, DEFAULT_AXIS_STEPS_PER_UNIT_E0 }
+ /**
+@@ -874,7 +874,7 @@
+ // The size of the print bed
+ #define X_BED_SIZE 250
+ #define Y_BED_SIZE 210
+-#define Z_SIZE 210
++#define Z_SIZE 202
+ 
+ // Travel limits (mm) after homing, corresponding to endstop positions.
+ #define X_MIN_POS -1
+diff --git a/include/marlin/Configuration_MK4_adv.h b/include/marlin/Configuration_MK4_adv.h
+index d3f1a5223..47a5edd3e 100644
+--- a/include/marlin/Configuration_MK4_adv.h
++++ b/include/marlin/Configuration_MK4_adv.h
+@@ -817,7 +817,7 @@
+         //   For direct drive, the full length of the nozzle.
+     //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
+     #define ADVANCED_PAUSE_PURGE_FEEDRATE 2.7 // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
+-    #define ADVANCED_PAUSE_PURGE_LENGTH 27 // (mm) Length to extrude after loading. //50
++    #define ADVANCED_PAUSE_PURGE_LENGTH 21 // (mm) Length to extrude after loading. //50
+         //   Set to 0 for manual extrusion.
+         //   Filament can be extruded repeatedly from the Filament Change menu
+         //   until extrusion is consistent, and to purge old filament.
+-- 
+2.39.5
