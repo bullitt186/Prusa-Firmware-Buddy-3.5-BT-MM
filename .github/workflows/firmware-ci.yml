@@ -173,7 +173,13 @@ jobs:
         shell: bash
         run: |
           mkdir -p release-assets
-          find dist -type f -exec cp {} release-assets/ \;
+          find dist -type f \( \
+            -name '*.bbf' -o \
+            -name '*.bin' -o \
+            -name '*.map' -o \
+            -name 'mk3.5_release_boot' -o \
+            -name 'mk3.5_release_noboot' \
+          \) -exec cp {} release-assets/ \;
           ls -la release-assets
 
       - name: Create or update GitHub release
