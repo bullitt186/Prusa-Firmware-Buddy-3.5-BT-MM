@@ -1,12 +1,11 @@
 From 35919f8fd16ef4dbc18466dc22254b086b984716 Mon Sep 17 00:00:00 2001
 From: bullitt168 <bastian@stahmer.net>
 Date: Mon, 29 Sep 2025 22:38:31 +0200
-Subject: [PATCH] custom mk3.5 and mk4 settings
+Subject: [PATCH] custom mk3.5 settings
 
 ---
- include/marlin/Configuration_MK3.5.h   | 6 +++---
- include/marlin/Configuration_MK4_adv.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/marlin/Configuration_MK3.5.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/include/marlin/Configuration_MK3.5.h b/include/marlin/Configuration_MK3.5.h
 index 5d6bbfb61..322a3e2c2 100644
@@ -39,18 +38,5 @@ index 5d6bbfb61..322a3e2c2 100644
  
  // Travel limits (mm) after homing, corresponding to endstop positions.
  #define X_MIN_POS -1
-diff --git a/include/marlin/Configuration_MK4_adv.h b/include/marlin/Configuration_MK4_adv.h
-index d3f1a5223..47a5edd3e 100644
---- a/include/marlin/Configuration_MK4_adv.h
-+++ b/include/marlin/Configuration_MK4_adv.h
-@@ -817,7 +817,7 @@
-         //   For direct drive, the full length of the nozzle.
-     //#define ADVANCED_PAUSE_CONTINUOUS_PURGE       // Purge continuously up to the purge length until interrupted.
-     #define ADVANCED_PAUSE_PURGE_FEEDRATE 2.7 // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
--    #define ADVANCED_PAUSE_PURGE_LENGTH 27 // (mm) Length to extrude after loading. //50
-+    #define ADVANCED_PAUSE_PURGE_LENGTH 21 // (mm) Length to extrude after loading. //50
-         //   Set to 0 for manual extrusion.
-         //   Filament can be extruded repeatedly from the Filament Change menu
-         //   until extrusion is consistent, and to purge old filament.
 -- 
 2.39.5
