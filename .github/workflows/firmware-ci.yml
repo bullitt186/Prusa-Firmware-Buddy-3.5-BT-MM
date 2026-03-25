@@ -183,9 +183,12 @@ jobs:
         run: |
           tag="${{ needs.prepare.outputs.release_tag }}"
           name="${{ needs.prepare.outputs.release_name }}"
-          notes="Built from upstream ${{ needs.prepare.outputs.upstream_ref }}
+          notes=$(cat <<'EOF'
+          Built from upstream ${{ needs.prepare.outputs.upstream_ref }}
 
-Patches applied from this repository."
+          Patches applied from this repository.
+          EOF
+          )
           if gh release view "${tag}" >/dev/null 2>&1; then
             gh release upload "${tag}" release-assets/* --clobber
           else
